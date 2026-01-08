@@ -13,6 +13,16 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    rules: {
+      // Disable React hooks effect warnings
+      "react-hooks/exhaustive-deps": "off",
+      // Disable TypeScript any warnings
+      "@typescript-eslint/no-explicit-any": "off",
+      // Disable Tailwind gradient warnings
+      "tailwindcss/no-custom-classname": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;

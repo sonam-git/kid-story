@@ -1,37 +1,21 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import StoryModal from '@/components/StoryModal';
 import { StoryInput } from '@/types/story';
 import { storageService } from '@/services/storageService';
 import { Sparkles } from 'lucide-react';
 
-export default function Home() {
+export default function CreateStory() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [generationProgress, setGenerationProgress] = useState('');
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  // Open modal if URL has ?create=true
-  useEffect(() => {
-    if (searchParams.get('create') === 'true') {
-      setIsModalOpen(true);
-    }
-  }, [searchParams]);
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-    router.push('/?create=true', { scroll: false });
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    router.push('/', { scroll: false });
-  };
 
   const handleCreateStory = async (input: StoryInput) => {
     setIsGenerating(true);
+    setGenerationProgress('Writing your story...');
     try {
       // Call API to generate the story with real AI
       const response = await fetch('/api/generate-story', {
@@ -44,23 +28,20 @@ export default function Home() {
 
       if (!response.ok) {
         const error = await response.json();
-        
-        // Handle rate limit errors specifically
-        if (response.status === 429) {
-          alert('⏰ Whoa! Slow down there, speedy! The AI needs a little break. Please wait 1 minute and try again! 🌟');
-          return;
-        }
-        
         throw new Error(error.error || 'Failed to generate story');
       }
 
+      setGenerationProgress('Generating images... This may take a moment!');
       const story = await response.json();
+      
+      setGenerationProgress('Almost done!');
       
       // Save to local storage
       storageService.saveStory(story);
       
       // Close modal and navigate to My Stories
       setIsModalOpen(false);
+      setGenerationProgress('');
       router.push('/my-stories');
     } catch (error) {
       console.error('Error creating story:', error);
@@ -68,6 +49,7 @@ export default function Home() {
       alert(errorMessage);
     } finally {
       setIsGenerating(false);
+      setGenerationProgress('');
     }
   };
 
@@ -89,7 +71,7 @@ export default function Home() {
 
         {/* Main CTA Button */}
         <button
-          onClick={handleOpenModal}
+          onClick={() => setIsModalOpen(true)}
           className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-12 py-6 rounded-full text-2xl font-bold hover:shadow-2xl transition-all hover:scale-110 flex items-center gap-3 mx-auto"
         >
           <Sparkles className="w-8 h-8" />
@@ -129,9 +111,10 @@ export default function Home() {
       {/* Story Modal */}
       <StoryModal
         isOpen={isModalOpen}
-        onClose={handleCloseModal}
+        onClose={() => setIsModalOpen(false)}
         onSubmit={handleCreateStory}
         isGenerating={isGenerating}
+        generationProgress={generationProgress}
       />
     </div>
   );
