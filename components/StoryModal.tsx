@@ -66,11 +66,11 @@ export default function StoryModal({ isOpen, onClose, onSubmit, isGenerating, ge
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-purple-500 to-pink-500 text-white p-6 rounded-t-3xl flex justify-between items-center">
+        <div className="sticky top-0 bg-linear-to-r from-purple-500 to-pink-500 text-white p-6 rounded-t-3xl flex justify-between items-center">
           <h2 className="text-3xl font-bold">✨ Create Your Story!</h2>
           <button
             onClick={onClose}
-            className="bg-red-500 hover:bg-red-600 rounded-full p-2 transition-all shadow-lg hover:shadow-xl hover:scale-110"
+            className="bg-gray-600 hover:bg-red-800 rounded-full p-2 transition-all shadow-lg hover:shadow-xl hover:scale-110"
             disabled={isGenerating}
             aria-label="Close"
           >

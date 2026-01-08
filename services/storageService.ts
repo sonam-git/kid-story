@@ -14,7 +14,10 @@ export const storageService = {
     
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? JSON.parse(stored) : [];
+      const stories = stored ? JSON.parse(stored) : [];
+      
+      // Clean up corrupted data
+      return stories.map((story: any) => this.cleanStory(story));
     } catch (error) {
       console.error('Error reading stories from storage:', error);
       return [];
@@ -85,5 +88,27 @@ export const storageService = {
       console.error('Error clearing stories from storage:', error);
       throw new Error('Failed to clear stories');
     }
-  }
+  },
+
+  /**
+   * Clean up corrupted story data
+   */
+  cleanStory(story: any): Story {
+    // Fix coverImage if it's an object or invalid (but keep valid URLs!)
+    if (!story.coverImage || typeof story.coverImage !== 'string' || story.coverImage.trim() === '') {
+      story.coverImage = 'https://placehold.co/1024x768/9333EA/FFFFFF/png?text=📚+Story';
+    }
+    
+    // Fix scenes with invalid imageUrls (but keep valid URLs!)
+    if (story.scenes && Array.isArray(story.scenes)) {
+      story.scenes = story.scenes.map((scene: any, index: number) => {
+        if (!scene.imageUrl || typeof scene.imageUrl !== 'string' || scene.imageUrl.trim() === '') {
+          scene.imageUrl = `https://placehold.co/1024x768/9333EA/FFFFFF/png?text=🌟+Scene+${index + 1}`;
+        }
+        return scene;
+      });
+    }
+    
+    return story as Story;
+  },
 };

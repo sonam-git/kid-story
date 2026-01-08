@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head><title>Check Storage</title></head>
+<body>
+<h1>LocalStorage Contents</h1>
+<pre id="output"></pre>
+<script>
+const stories = localStorage.getItem('kid-stories');
+if (stories) {
+  const parsed = JSON.parse(stories);
+  document.getElementById('output').textContent = JSON.stringify(parsed, null, 2);
+  
+  console.log('Total stories:', parsed.length);
+  parsed.forEach((story, i) => {
+    console.log(`\nStory ${i + 1}: ${story.title}`);
+    console.log('Cover Image:', story.coverImage);
+    story.scenes?.forEach((scene, j) => {
+      console.log(`  Scene ${j + 1} Image:`, scene.imageUrl?.substring(0, 100));
+    });
+  });
+} else {
+  document.getElementById('output').textContent = 'No stories found';
+}
+</script>
+</body>
+</html>

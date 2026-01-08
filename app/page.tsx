@@ -119,7 +119,7 @@ export default function Home() {
         <div className="pt-8">
           <button
             onClick={() => router.push('/my-stories')}
-            className="text-purple-600 hover:text-purple-800 font-semibold text-lg underline"
+            className="text-purple-600 hover:text-purple-800 font-semibold text-lg underline underline-offset-6"
           >
             View My Stories →
           </button>

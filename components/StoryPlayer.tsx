@@ -126,9 +126,9 @@ export default function StoryPlayer({ story, onClose }: StoryPlayerProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-pink-900 z-50 flex flex-col overflow-hidden">
+    <div className="fixed inset-0 bg-linear-to-br from-purple-900 via-blue-900 to-pink-900 z-50 flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="bg-black bg-opacity-30 backdrop-blur-sm p-3 md:p-4 flex justify-between items-center flex-shrink-0">
+      <div className="bg-black bg-opacity-30 backdrop-blur-sm p-3 md:p-4 flex justify-between items-center shrink-0">
         <div className="flex-1 min-w-0">
           <h1 className="text-lg md:text-2xl lg:text-3xl font-bold text-white truncate">{story.title}</h1>
           <p className="text-purple-200 text-xs md:text-sm flex items-center gap-2">
@@ -139,7 +139,7 @@ export default function StoryPlayer({ story, onClose }: StoryPlayerProps) {
         </div>
         <button
           onClick={handleClose}
-          className="bg-pink-500 hover:bg-pink-600 rounded-full p-2 md:p-3 transition-all shadow-lg hover:shadow-xl hover:scale-110 ml-2 flex-shrink-0"
+          className="bg-pink-500 hover:bg-pink-600 rounded-full p-2 md:p-3 transition-all shadow-lg hover:shadow-xl hover:scale-110 ml-2 shrink-0"
           aria-label="Close story"
         >
           <X className="w-5 h-5 md:w-6 md:h-6 text-white" />
@@ -151,18 +151,59 @@ export default function StoryPlayer({ story, onClose }: StoryPlayerProps) {
         <div className="w-full max-w-7xl h-full flex flex-col lg:flex-row items-stretch gap-4 md:gap-6 lg:gap-8">
           
           {/* Image - Left Side */}
-          <div className="flex-1 flex flex-col items-center justify-center min-h-[300px] lg:min-h-0">
-            <div className="relative w-full h-full max-h-[400px] lg:max-h-none rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
-              {currentScene.imageUrl ? (
+          <div className="flex-1 flex flex-col items-center justify-center min-h-75 lg:min-h-0">
+            <div className="relative w-full h-full max-h-100 lg:max-h-none rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
+              {(() => {
+                // Robust validation for image URL
+                if (!currentScene.imageUrl) return false;
+                
+                // Must be a non-empty string
+                if (typeof currentScene.imageUrl !== 'string') {
+                  console.warn('Invalid imageUrl type:', typeof currentScene.imageUrl);
+                  return false;
+                }
+                
+                const trimmed = currentScene.imageUrl.trim();
+                
+                // Check for empty or invalid strings
+                if (!trimmed || trimmed === '' || trimmed === '[object Object]' || trimmed === 'undefined' || trimmed === 'null') {
+                  console.warn('Invalid imageUrl value:', trimmed);
+                  return false;
+                }
+                
+                // Must be a valid URL
+                try {
+                  const url = new URL(trimmed);
+                  // Additional check: must have http or https protocol
+                  if (!url.protocol.startsWith('http') && !url.protocol.startsWith('data:')) {
+                    console.warn('Invalid URL protocol:', url.protocol);
+                    return false;
+                  }
+                  return trimmed; // Return the validated URL string
+                } catch (error) {
+                  console.warn('Failed to parse imageUrl as URL:', trimmed, error);
+                  return false;
+                }
+              })() ? (
                 <Image
-                  src={currentScene.imageUrl}
+                  src={(() => {
+                    const validated = currentScene.imageUrl;
+                    return typeof validated === 'string' ? validated : '';
+                  })()}
                   alt={`Scene ${currentSceneIndex + 1}`}
                   fill
                   className="object-contain"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   priority
+                  unoptimized={
+                    typeof currentScene.imageUrl === 'string' && 
+                    (currentScene.imageUrl.startsWith('data:') || 
+                     currentScene.imageUrl.includes('placehold.co') || 
+                     currentScene.imageUrl.includes('replicate.delivery'))
+                  }
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-yellow-300 to-pink-300 flex items-center justify-center text-6xl md:text-8xl">
+                <div className="w-full h-full bg-linear-to-br from-yellow-300 to-pink-300 flex items-center justify-center text-6xl md:text-8xl">
                   📖
                 </div>
               )}
@@ -188,7 +229,7 @@ export default function StoryPlayer({ story, onClose }: StoryPlayerProps) {
       </div>
 
       {/* Controls - Fixed at bottom with larger, more visible arrows */}
-      <div className="bg-black bg-opacity-40 backdrop-blur-sm p-4 md:p-6 flex-shrink-0">
+      <div className="bg-black bg-opacity-40 backdrop-blur-sm p-4 md:p-6 shrink-0">
         <div className="max-w-7xl mx-auto flex items-center justify-center gap-4 md:gap-6 lg:gap-8">
           
           {/* Previous Button - Larger and more visible */}
@@ -208,7 +249,7 @@ export default function StoryPlayer({ story, onClose }: StoryPlayerProps) {
           {/* Play/Pause Button */}
           <button
             onClick={handlePlayPause}
-            className="bg-gradient-to-r from-green-400 to-blue-500 text-white p-5 md:p-6 lg:p-8 rounded-full hover:shadow-2xl transition-all hover:scale-110 shadow-xl"
+            className="bg-linear-to-r from-green-400 to-blue-500 text-white p-5 md:p-6 lg:p-8 rounded-full hover:shadow-2xl transition-all hover:scale-110 shadow-xl"
             aria-label={isPlaying && !isPaused ? "Pause narration" : "Play narration"}
           >
             {isPlaying && !isPaused ? (

@@ -67,10 +67,10 @@ export default function MyStories() {
             </button>
             <button
               onClick={() => router.push('/?create=true')}
-              className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full font-bold hover:shadow-lg transition-all flex items-center gap-2"
+              className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 md:px-6 py-3 rounded-full font-bold hover:shadow-lg transition-all flex items-center gap-2"
             >
               <Plus className="w-5 h-5" />
-              New Story
+              <span className="hidden md:inline">New Story</span>
             </button>
           </div>
         </div>

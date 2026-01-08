@@ -2,7 +2,31 @@
 
 A delightful Next.js application that allows kids to create their own AI-generated stories with custom characters, genres, and beautiful illustrations. Stories can be saved, replayed with text-to-speech narration, and enjoyed in a full-screen immersive mode.
 
-**✨ Now with 100% FREE AI using Hugging Face! ✨**
+**✨ Now with FREE AI story generation using Hugging Face! ✨**
+
+## 🖼️ Image Generation - Your Options
+
+**Reality Check:** There are currently **NO truly free AI image generation services** that work reliably in 2026.
+
+### ✅ Current Status: Beautiful Placeholders (FREE)
+The app uses colorful, descriptive placeholders showing scene content. Works perfectly!
+
+### � Best Option: Replicate API (~$0.015/story)
+**Most affordable and high-quality option!**
+- 💰 **Super cheap**: $10 = ~666 stories
+- 🎨 **High quality**: FLUX or Stable Diffusion XL
+- ⚡ **Fast**: 2-5 seconds per image
+- 🆓 **Free credits**: New accounts get starter credits
+
+**📖 See [REPLICATE_SETUP.md](./REPLICATE_SETUP.md) for 5-minute setup**
+
+### Alternative: DALL-E ($0.20/story)
+Already configured! Just add OpenAI credits:
+- **📖 See [DALLE_SETUP.md](./DALLE_SETUP.md)**
+- Higher quality but 13x more expensive
+
+### Keep Using Placeholders (FREE)
+The app is fully functional with descriptive placeholders!
 
 ## ✨ Features
 
