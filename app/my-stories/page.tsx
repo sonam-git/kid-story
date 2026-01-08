@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import StoryCard from '@/components/StoryCard';
 import StoryPlayer from '@/components/StoryPlayer';
 import DeleteConfirmModal from '@/components/DeleteConfirmModal';
@@ -54,8 +55,17 @@ export default function MyStories() {
       <div className="bg-white shadow-md sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <BookOpen className="w-8 h-8 text-purple-600" />
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-800">My Stories</h1>
+            <Image 
+              src="/logo/ks-transparent-logo.png" 
+              alt="Story Magic" 
+              width={40} 
+              height={40}
+              className="drop-shadow-md"
+            />
+            <div className="flex items-center gap-2">
+              <BookOpen className="w-8 h-8 text-purple-600" />
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-800">My Stories</h1>
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <button
@@ -107,6 +117,16 @@ export default function MyStories() {
             ))}
           </div>
         )}
+      </div>
+
+      {/* Footer */}
+      <div className="max-w-7xl mx-auto px-4 py-8 text-center">
+        <button
+          onClick={() => router.push('/about')}
+          className="text-pink-600 hover:text-pink-800 font-medium text-base underline underline-offset-4"
+        >
+          ❤️ About Story Magic
+        </button>
       </div>
 
       {/* Story Player Modal */}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { StoryInput, GENRE_OPTIONS } from '@/types/story';
 import { X } from 'lucide-react';
 
@@ -67,7 +68,16 @@ export default function StoryModal({ isOpen, onClose, onSubmit, isGenerating, ge
       <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="sticky top-0 bg-linear-to-r from-purple-500 to-pink-500 text-white p-6 rounded-t-3xl flex justify-between items-center">
-          <h2 className="text-3xl font-bold">✨ Create Your Story!</h2>
+          <div className="flex items-center gap-3">
+            <Image 
+              src="/logo/ks-transparent-logo.png" 
+              alt="Story Magic" 
+              width={40} 
+              height={40}
+              className="drop-shadow-md"
+            />
+            <h2 className="text-3xl font-bold">✨ Create Your Story!</h2>
+          </div>
           <button
             onClick={onClose}
             className="bg-gray-600 hover:bg-red-800 rounded-full p-2 transition-all shadow-lg hover:shadow-xl hover:scale-110"

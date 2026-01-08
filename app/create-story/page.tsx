@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import StoryModal from '@/components/StoryModal';
 import { StoryInput } from '@/types/story';
 import { storageService } from '@/services/storageService';
@@ -58,6 +59,17 @@ export default function CreateStory() {
       <div className="max-w-4xl w-full text-center space-y-8">
         {/* Hero Section */}
         <div className="space-y-4">
+          {/* Logo */}
+          <div className="flex justify-center mb-6">
+            <Image 
+              src="/logo/ks-transparent-logo.png" 
+              alt="Story Magic Logo" 
+              width={120} 
+              height={120}
+              className="drop-shadow-lg"
+            />
+          </div>
+          
           <h1 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 mb-4">
             ✨ Story Magic ✨
           </h1>

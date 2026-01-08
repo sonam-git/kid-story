@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate PWA Icons</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    canvas {
+      border: 1px solid #ddd;
+      margin: 10px;
+    }
+    button {
+      background: #9333ea;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎨 Story Magic PWA Icon Generator</h1>
+  <p>Click the buttons below to download the app icons:</p>
+  
+  <div>
+    <canvas id="canvas192" width="192" height="192"></canvas>
+    <canvas id="canvas512" width="512" height="512"></canvas>
+  </div>
+  
+  <div>
+    <button onclick="download192()">Download 192x192 Icon</button>
+    <button onclick="download512()">Download 512x512 Icon</button>
+  </div>
+
+  <script>
+    function drawIcon(canvas) {
+      const ctx = canvas.getContext('2d');
+      const size = canvas.width;
+      
+      // Create gradient background
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#9333ea');
+      gradient.addColorStop(1, '#ec4899');
+      
+      // Draw rounded rectangle background
+      const radius = size / 5;
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.roundRect(0, 0, size, size, radius);
+      ctx.fill();
+      
+      // Draw sparkle emoji
+      ctx.font = `${size * 0.55}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('✨', size / 2, size / 2);
+    }
+    
+    function download(canvas, filename) {
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+    
+    function download192() {
+      download(document.getElementById('canvas192'), 'icon-192.png');
+    }
+    
+    function download512() {
+      download(document.getElementById('canvas512'), 'icon-512.png');
+    }
+    
+    // Draw icons on load
+    window.onload = () => {
+      drawIcon(document.getElementById('canvas192'));
+      drawIcon(document.getElementById('canvas512'));
+    };
+  </script>
+</body>
+</html>
