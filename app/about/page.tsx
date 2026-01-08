@@ -49,8 +49,8 @@ export default function About() {
                 className="drop-shadow-lg"
               />
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-linear-to-r from-purple-600 to-pink-600">
-              🌟 About Story Magic 🌟
+            <h2 className="text-3xl md:text-5xl font-bold text-transparent bg-clip-text bg-linear-to-r from-purple-600 to-pink-600">
+              🌟 About ImagiKids🌟
             </h2>
           </div>
 
@@ -78,7 +78,7 @@ export default function About() {
             <div className="bg-linear-to-br from-blue-50 to-purple-50 rounded-2xl p-6 space-y-4">
               <div className="flex items-center gap-3 mb-4">
                 <Sparkles className="w-8 h-8 text-purple-600" />
-                <h3 className="text-2xl font-bold text-gray-800">🧠✨ A Little Help from AI</h3>
+                <h3 className="text-xl font-bold text-gray-800">🧠✨ A Little Help from AI</h3>
               </div>
               
               <p>
@@ -108,20 +108,19 @@ export default function About() {
                 </li>
               </ul>
               
-              <p className="text-purple-900 font-medium pt-4">
+              <p className="text-purple-900 font-medium pt-4 ">
                 My kids absolutely love it — and bedtime has become easier, calmer, and even more magical 💤🌙
               </p>
             </div>
 
             {/* Made with Love Section */}
-            <div className="bg-linear-to-r from-pink-50 to-purple-50 rounded-2xl p-6 space-y-4">
-              <div className="flex items-center gap-3 mb-4">
-                <Heart className="w-8 h-8 text-pink-600" />
-                <h3 className="text-2xl font-bold text-gray-800">❤️ Made for Kids, Loved by Parents</h3>
+            <div className="bg-linear-to-r from-pink-50 to-purple-50 rounded-2xl p-4 space-y-4">
+              <Heart className="w-8 h-8 text-pink-600" />
+              <div className="flex items-center gap-1 mb-4">
+                <h3 className="text-md font-bold text-center text-gray-800"> Made for Kids, ❤️ by Parents </h3>
               </div>
-              
-              <p>This app was made with love for children and parents alike:</p>
-              
+              <p className="text-center">This app was made with love for children and parents alike:</p>
+
               <ul className="space-y-2 ml-6">
                 <li className="flex items-start gap-2">
                   <span className="text-pink-600 font-bold">✓</span>

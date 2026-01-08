@@ -89,8 +89,8 @@ function HomeContent() {
             />
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 mb-4">
-            ✨ Story Magic ✨
+          <h1 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-linear-to-r from-purple-600 to-pink-600 mb-4">
+            ✨ ImagiKids✨
           </h1>
           <p className="text-2xl md:text-3xl text-gray-700 font-semibold">
             Create Amazing Stories with AI!
