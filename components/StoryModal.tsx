@@ -64,10 +64,10 @@ export default function StoryModal({ isOpen, onClose, onSubmit, isGenerating, ge
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 md:p-4">
+      <div className="bg-white md:rounded-3xl shadow-2xl md:max-w-2xl w-full h-full md:h-auto md:max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="sticky top-0 bg-linear-to-r from-purple-500 to-pink-500 text-white p-6 rounded-t-3xl flex justify-between items-center">
+        <div className="sticky top-0 bg-linear-to-r from-purple-500 to-pink-500 text-white p-6 md:rounded-t-3xl flex justify-between items-center">
           <div className="flex items-center gap-3">
             <Image 
               src="/logo/ks-transparent-logo.png" 
@@ -154,7 +154,7 @@ export default function StoryModal({ isOpen, onClose, onSubmit, isGenerating, ge
                   onClick={() => handleGenreToggle(genre)}
                   className={`px-4 py-3 rounded-xl font-bold text-lg transition-all ${
                     selectedGenres.includes(genre)
-                      ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-white shadow-lg scale-105'
+                      ? 'bg-linear-to-r from-yellow-400 to-orange-400 text-white shadow-lg scale-105'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                   disabled={isGenerating}
@@ -171,7 +171,7 @@ export default function StoryModal({ isOpen, onClose, onSubmit, isGenerating, ge
             disabled={!isValid() || isGenerating}
             className={`w-full py-4 rounded-xl font-bold text-xl transition-all ${
               isValid() && !isGenerating
-                ? 'bg-gradient-to-r from-green-400 to-blue-500 text-white hover:shadow-xl hover:scale-105'
+                ? 'bg-linear-to-r from-green-400 to-blue-500 text-white hover:shadow-xl hover:scale-105'
                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             }`}
           >
