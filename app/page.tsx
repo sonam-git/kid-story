@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import StoryModal from '@/components/StoryModal';
 import { StoryInput } from '@/types/story';
 import { storageService } from '@/services/storageService';
 import { Sparkles } from 'lucide-react';
 
-export default function Home() {
+function HomeContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const router = useRouter();
@@ -134,5 +134,20 @@ export default function Home() {
         isGenerating={isGenerating}
       />
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-purple-600 mb-4">✨ Story Magic ✨</h1>
+          <p className="text-gray-600">Loading your magical story adventure...</p>
+        </div>
+      </div>
+    }>
+      <HomeContent />
+    </Suspense>
   );
 }
