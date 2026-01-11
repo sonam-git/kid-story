@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import StoryModal from '@/components/StoryModal';
 import { StoryInput } from '@/types/story';
-import { storageService } from '@/services/storageService';
+import { apiStorageService } from '@/services/apiStorageService';
 import { Sparkles } from 'lucide-react';
 
 export default function CreateStory() {
@@ -35,10 +35,10 @@ export default function CreateStory() {
       setGenerationProgress('Generating images... This may take a moment!');
       const story = await response.json();
       
-      setGenerationProgress('Almost done!');
+      setGenerationProgress('Saving your story...');
       
-      // Save to local storage
-      storageService.saveStory(story);
+      // Save to MongoDB via API
+      await apiStorageService.saveStory(story);
       
       // Close modal and navigate to My Stories
       setIsModalOpen(false);

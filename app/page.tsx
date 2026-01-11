@@ -3,16 +3,21 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 import StoryModal from '@/components/StoryModal';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { StoryInput } from '@/types/story';
-import { storageService } from '@/services/storageService';
-import { Sparkles } from 'lucide-react';
+import { apiStorageService } from '@/services/apiStorageService';
+import { Sparkles, LogIn, UserPlus } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 function HomeContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { user } = useAuth();
 
   // Open modal if URL has ?create=true
   useEffect(() => {
@@ -57,8 +62,8 @@ function HomeContent() {
 
       const story = await response.json();
       
-      // Save to local storage
-      storageService.saveStory(story);
+      // Save to MongoDB via API
+      await apiStorageService.saveStory(story);
       
       // Close modal and navigate to My Stories
       setIsModalOpen(false);
@@ -73,8 +78,13 @@ function HomeContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 flex flex-col items-center justify-center p-4">
-      <div className="max-w-4xl w-full text-center space-y-8">
+    <div className="min-h-screen bg-linear-to-br from-blue-100 via-purple-100 to-pink-100">
+      {/* Header - Only show when logged in */}
+      {user && <Header />}
+
+      {/* Content */}
+      <div className="flex flex-col items-center justify-center p-4" style={{ minHeight: user ? 'calc(100vh - 96px)' : '100vh' }}>
+        <div className="max-w-4xl w-full text-center space-y-8">
         {/* Hero Section */}
         <div className="space-y-4">
           {/* Logo */}
@@ -100,14 +110,41 @@ function HomeContent() {
           </p>
         </div>
 
-        {/* Main CTA Button */}
-        <button
-          onClick={handleOpenModal}
-          className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-12 py-6 rounded-full text-2xl font-bold hover:shadow-2xl transition-all hover:scale-110 flex items-center gap-3 mx-auto"
-        >
-          <Sparkles className="w-8 h-8" />
-          Create Your Story
-        </button>
+        {/* Main CTA Button - Only show when logged in */}
+        {user && (
+          <button
+            onClick={handleOpenModal}
+            className="bg-linear-to-r from-purple-500 to-pink-500 text-white px-12 py-6 rounded-full text-2xl font-bold hover:shadow-2xl transition-all hover:scale-110 flex items-center gap-3 mx-auto"
+          >
+            <Sparkles className="w-8 h-8" />
+            Create Your Story
+          </button>
+        )}
+
+        {/* CTA for non-logged in users */}
+        {!user && (
+          <div className="space-y-4">
+            <p className="text-xl text-gray-700 font-semibold">
+              Sign up to start creating magical stories! ✨
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                href="/register"
+                className="bg-linear-to-r from-purple-500 to-pink-500 text-white px-10 py-4 rounded-full text-xl font-bold hover:shadow-2xl transition-all hover:scale-105 flex items-center gap-3 justify-center"
+              >
+                <UserPlus className="w-6 h-6" />
+                Sign Up Free
+              </Link>
+              <Link
+                href="/login"
+                className="bg-white text-purple-600 border-2 border-purple-500 px-10 py-4 rounded-full text-xl font-bold hover:shadow-xl transition-all hover:scale-105 flex items-center gap-3 justify-center"
+              >
+                <LogIn className="w-6 h-6" />
+                Login
+              </Link>
+            </div>
+          </div>
+        )}
 
         {/* Features Grid */}
         <div className="grid md:grid-cols-3 gap-6 mt-12">
@@ -127,23 +164,11 @@ function HomeContent() {
             <p className="text-gray-600">Listen as your story comes alive</p>
           </div>
         </div>
-
-        {/* Navigation */}
-        <div className="pt-8 flex flex-col items-center gap-3">
-          <button
-            onClick={() => router.push('/my-stories')}
-            className="text-purple-600 hover:text-purple-800 font-semibold text-lg underline underline-offset-6"
-          >
-            View My Stories →
-          </button>
-          <button
-            onClick={() => router.push('/about')}
-            className="text-pink-600 hover:text-pink-800 font-medium text-base underline underline-offset-4"
-          >
-            ❤️ About Us
-          </button>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
 
       {/* Story Modal */}
       <StoryModal
@@ -159,7 +184,7 @@ function HomeContent() {
 export default function Home() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 flex items-center justify-center">
+      <div className="min-h-screen bg-linear-to-br from-blue-100 via-purple-100 to-pink-100 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-purple-600 mb-4">✨ Story Magic ✨</h1>
           <p className="text-gray-600">Loading your magical story adventure...</p>

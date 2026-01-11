@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import Replicate from 'replicate';
 import type { StoryInput, Story, Scene } from '@/types/story';
+import { uploadMultipleToCloudinary } from '@/lib/cloudinary';
 
 // Hugging Face API configuration
 const HF_API_KEY = process.env.HUGGINGFACE_API_KEY;
@@ -152,7 +153,7 @@ IMPORTANT: Return ONLY valid JSON, no other text.`;
     });
 
     // Generate images sequentially with delays to avoid rate limits
-    const imageUrls: string[] = [];
+    let imageUrls: string[] = [];
     for (let index = 0; index < result.scenes.length; index++) {
       const scene = result.scenes[index];
       try {
@@ -304,8 +305,24 @@ IMPORTANT: Return ONLY valid JSON, no other text.`;
       }
     }
     
-    console.log('All images generated successfully!');
+    console.log('✓ All images generated successfully!');
     console.log('Image URLs:', imageUrls);
+
+    // Upload all images to Cloudinary for permanent storage
+    console.log('📤 Uploading images to Cloudinary (story-magic folder)...');
+    try {
+      const cloudinaryUrls = await uploadMultipleToCloudinary(imageUrls, {
+        folder: 'story-magic', // Organizes images in dedicated folder
+        tags: ['story', 'ai-generated', input.genre[0] || 'adventure'],
+      });
+      
+      // Replace temporary URLs with permanent Cloudinary URLs
+      imageUrls = cloudinaryUrls;
+      console.log('✅ All images uploaded to Cloudinary!');
+    } catch (uploadError) {
+      console.error('⚠️ Cloudinary upload failed, using original URLs:', uploadError);
+      // Continue with original URLs if upload fails
+    }
 
     // Build the final story object
     const storyId = uuidv4();

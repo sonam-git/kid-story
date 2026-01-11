@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fredoka, Comic_Neue } from "next/font/google";
 import PWARegister from "@/components/PWARegister";
 import InstallPrompt from "@/components/InstallPrompt";
+import { AuthProvider } from "@/contexts/AuthContext";
 import "./globals.css";
 
 const fredoka = Fredoka({
@@ -77,9 +78,11 @@ export default function RootLayout({
         className={`${fredoka.variable} ${comicNeue.variable} antialiased`}
         style={{ fontFamily: 'var(--font-fredoka)' }}
       >
-        <PWARegister />
-        <InstallPrompt />
-        {children}
+        <AuthProvider>
+          <PWARegister />
+          <InstallPrompt />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
