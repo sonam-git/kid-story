@@ -13,6 +13,9 @@ export interface Story {
   description: string;
   scenes: Scene[];
   coverImage?: string;
+  likes?: string[];
+  likesCount?: number;
+  userId?: string;
   createdAt: string;
 }
 

@@ -16,6 +16,8 @@ export interface IStory extends Document {
   description: string;
   scenes: IScene[];
   coverImage?: string;
+  likes: mongoose.Types.ObjectId[];
+  likesCount: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -87,6 +89,15 @@ const storySchema = new Schema<IStory>(
     },
     coverImage: {
       type: String,
+    },
+    likes: {
+      type: [Schema.Types.ObjectId],
+      ref: 'User',
+      default: [],
+    },
+    likesCount: {
+      type: Number,
+      default: 0,
     },
   },
   {

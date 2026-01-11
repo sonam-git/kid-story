@@ -71,6 +71,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const data = await response.json();
     setUser(data.user);
+    
+    // Save token to localStorage for API calls
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+    }
   };
 
   const register = async (registerData: RegisterData) => {
@@ -89,6 +94,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const data = await response.json();
     setUser(data.user);
+    
+    // Save token to localStorage for API calls
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+    }
   };
 
   const logout = async () => {
@@ -97,6 +107,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         method: 'POST',
       });
       setUser(null);
+      // Clear token from localStorage
+      localStorage.removeItem('token');
     } catch (error) {
       console.error('Logout failed:', error);
     }

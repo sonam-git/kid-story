@@ -9,6 +9,7 @@ import Footer from '@/components/Footer';
 import { Story } from '@/types/story';
 import { Loader2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { apiStorageService } from '@/services/apiStorageService';
 
 export default function AllStoriesPage() {
   const [stories, setStories] = useState<Story[]>([]);
@@ -33,18 +34,8 @@ export default function AllStoriesPage() {
       setLoading(true);
       setError('');
 
-      const response = await fetch('/api/stories/public');
-      
-      if (!response.ok) {
-        if (response.status === 401) {
-          router.push('/login');
-          return;
-        }
-        throw new Error('Failed to fetch stories');
-      }
-
-      const data = await response.json();
-      setStories(data.stories || []);
+      const loadedStories = await apiStorageService.getAllStories();
+      setStories(loadedStories);
     } catch (err: any) {
       console.error('Error fetching public stories:', err);
       setError(err.message || 'Failed to load stories');
@@ -59,6 +50,32 @@ export default function AllStoriesPage() {
 
   const handleClosePlayer = () => {
     setSelectedStory(null);
+  };
+
+  const handleLike = async (storyId: string) => {
+    try {
+      const result = await apiStorageService.toggleLike(storyId);
+      
+      // Update the story in the list with new like status
+      setStories(prevStories =>
+        prevStories.map(story =>
+          story.id === storyId
+            ? { 
+                ...story, 
+                likesCount: result.likesCount,
+                likes: result.liked 
+                  ? [...(story.likes || []), user?.id || '']
+                  : (story.likes || []).filter(id => id !== user?.id)
+              }
+            : story
+        )
+      );
+      
+      return result;
+    } catch (error) {
+      console.error('Error toggling like:', error);
+      throw error;
+    }
   };
 
   if (!user) {
@@ -139,6 +156,8 @@ export default function AllStoriesPage() {
                 key={story.id}
                 story={story}
                 onPlay={handlePlayStory}
+                onLike={handleLike}
+                showLike={true}
               />
             ))}
           </div>

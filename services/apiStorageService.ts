@@ -136,6 +136,65 @@ export const apiStorageService = {
       throw error;
     }
   },
+
+  /**
+   * Toggle like on a story
+   */
+  async toggleLike(storyId: string): Promise<{ liked: boolean; likesCount: number }> {
+    try {
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        throw new Error('No authentication token found. Please log in.');
+      }
+      
+      const response = await fetch(`/api/stories/${storyId}/like`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          throw new Error('Not authenticated. Please log in again.');
+        }
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to toggle like');
+      }
+
+      const data = await response.json();
+      return {
+        liked: data.liked,
+        likesCount: data.likesCount,
+      };
+    } catch (error) {
+      console.error('Error toggling like:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get all public stories
+   */
+  async getAllStories(): Promise<Story[]> {
+    try {
+      const response = await fetch('/api/stories/public', {
+        method: 'GET',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch public stories');
+      }
+
+      const data = await response.json();
+      return data.stories || [];
+    } catch (error) {
+      console.error('Error fetching public stories:', error);
+      throw error;
+    }
+  },
 };
 
 // Keep the old localStorage service for backward compatibility
