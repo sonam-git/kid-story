@@ -38,7 +38,7 @@ export default function LoginPage() {
           <Link href="/" className="inline-block">
             <Image
               src="/logo/ks-transparent-logo.png"
-              alt="Story Magic"
+              alt="ImagiKids"
               width={120}
               height={120}
               className="mx-auto"

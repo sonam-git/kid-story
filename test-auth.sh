@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Story Magic Auth Test Script
+# ImagiKids Auth Test Script
 # This script helps you verify your authentication setup
 
-echo "🔐 Story Magic Authentication Test"
+echo "🔐 ImagiKids Authentication Test"
 echo "=================================="
 echo ""
 

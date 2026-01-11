@@ -91,7 +91,7 @@ function HomeContent() {
           <div className="flex justify-center mb-6">
             <Image 
               src="/logo/ks-transparent-logo.png" 
-              alt="Story Magic Logo" 
+              alt="ImagiKids Logo" 
               width={120} 
               height={120}
               className="drop-shadow-lg"
@@ -186,7 +186,7 @@ export default function Home() {
     <Suspense fallback={
       <div className="min-h-screen bg-linear-to-br from-blue-100 via-purple-100 to-pink-100 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-purple-600 mb-4">✨ Story Magic ✨</h1>
+          <h1 className="text-4xl font-bold text-purple-600 mb-4">✨ ImagiKids ✨</h1>
           <p className="text-gray-600">Loading your magical story adventure...</p>
         </div>
       </div>

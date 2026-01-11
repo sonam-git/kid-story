@@ -77,7 +77,7 @@ export default function Header() {
             <div className="relative">
               <Image 
                 src="/logo/ks-transparent-logo.png" 
-                alt="Story Magic" 
+                alt="ImagiKids" 
                 width={50} 
                 height={50}
                 className="drop-shadow-lg group-hover:scale-110 transition-transform duration-300"

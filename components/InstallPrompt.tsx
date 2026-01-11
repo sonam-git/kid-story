@@ -58,7 +58,7 @@ export default function InstallPrompt() {
     const { outcome } = await deferredPrompt.userChoice;
     
     if (outcome === 'accepted') {
-      console.log('✨ User installed Story Magic!');
+      console.log('✨ User installed ImagiKids!');
     } else {
       console.log('User dismissed the install prompt');
     }
@@ -96,7 +96,7 @@ export default function InstallPrompt() {
           
           <div className="flex-1">
             <h3 className="font-bold text-lg mb-1">
-              📱 Install Story Magic!
+              📱 Install ImagiKids!
             </h3>
             <p className="text-sm text-white/90 mb-3">
               Add to your home screen for quick access and use it like a real app!

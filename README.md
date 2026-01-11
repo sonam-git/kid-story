@@ -1,4 +1,4 @@
-# 🎨 Story Magic - Kid-Friendly AI Storytelling App
+# 🎨 ImagiKids - Kid-Friendly AI Storytelling App
 
 A delightful Next.js application that allows kids to create their own AI-generated stories with custom characters, genres, and beautiful illustrations. Stories can be saved, replayed with text-to-speech narration, and enjoyed in a full-screen immersive mode.
 

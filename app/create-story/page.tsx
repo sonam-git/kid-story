@@ -63,7 +63,7 @@ export default function CreateStory() {
           <div className="flex justify-center mb-6">
             <Image 
               src="/logo/ks-transparent-logo.png" 
-              alt="Story Magic Logo" 
+              alt="ImagiKids Logo" 
               width={120} 
               height={120}
               className="drop-shadow-lg"
@@ -71,7 +71,7 @@ export default function CreateStory() {
           </div>
           
           <h1 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 mb-4">
-            ✨ Story Magic ✨
+            ✨ ImagiKids ✨
           </h1>
           <p className="text-2xl md:text-3xl text-gray-700 font-semibold">
             Create Amazing Stories with AI!

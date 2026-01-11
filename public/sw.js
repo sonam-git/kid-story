@@ -1,4 +1,4 @@
-// Service Worker for Story Magic PWA
+// Service Worker for ImagiKids PWA
 const CACHE_NAME = 'story-magic-v1';
 const urlsToCache = [
   '/',

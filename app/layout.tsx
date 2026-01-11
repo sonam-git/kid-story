@@ -18,7 +18,7 @@ const comicNeue = Comic_Neue({
 });
 
 export const metadata: Metadata = {
-  title: "Story Magic - Kid-Friendly AI Stories",
+  title: "ImagiKids - Kid-Friendly AI Stories",
   description: "Create amazing stories with AI! A fun, safe storytelling app for kids.",
   manifest: "/manifest.json",
   icons: {
@@ -34,20 +34,20 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Story Magic",
+    title: "ImagiKids",
   },
   formatDetection: {
     telephone: false,
   },
   openGraph: {
     type: "website",
-    siteName: "Story Magic",
-    title: "Story Magic - Kid-Friendly AI Stories",
+    siteName: "ImagiKids",
+    title: "ImagiKids - Kid-Friendly AI Stories",
     description: "Create amazing stories with AI! A fun, safe storytelling app for kids.",
   },
   twitter: {
     card: "summary",
-    title: "Story Magic - Kid-Friendly AI Stories",
+    title: "ImagiKids - Kid-Friendly AI Stories",
     description: "Create amazing stories with AI! A fun, safe storytelling app for kids.",
   },
 };
@@ -70,7 +70,7 @@ export default function RootLayout({
         {/* Additional PWA meta tags */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Story Magic" />
+        <meta name="apple-mobile-web-app-title" content="ImagiKids" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#9333ea" />
       </head>

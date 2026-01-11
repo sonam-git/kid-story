@@ -3,9 +3,11 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Heart, Sparkles, Book, Home, Moon, Star } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function About() {
   const router = useRouter();
+  const { user } = useAuth();
 
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 via-purple-50 to-pink-50">
@@ -15,9 +17,9 @@ export default function About() {
           <div className="flex items-center gap-3">
             <Image 
               src="/logo/ks-transparent-logo.png" 
-              alt="Story Magic" 
-              width={40} 
-              height={40}
+              alt="ImagiKids" 
+              width={60} 
+              height={60}
               className="drop-shadow-md"
             />
             <div className="flex items-center gap-2">
@@ -43,7 +45,7 @@ export default function About() {
             <div className="flex justify-center mb-6">
               <Image 
                 src="/logo/ks-transparent-logo.png" 
-                alt="Story Magic Logo" 
+                alt="ImagiKids Logo" 
                 width={100} 
                 height={100}
                 className="drop-shadow-lg"
@@ -153,20 +155,22 @@ export default function About() {
               </p>
             </div>
 
-            {/* CTA Section */}
-            <div className="bg-linear-to-r from-purple-100 to-pink-100 rounded-2xl p-8 text-center space-y-4">
-              <Moon className="w-12 h-12 text-purple-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-gray-800">
-                Ready to create magical bedtime stories?
-              </h3>
-              <button
-                onClick={() => router.push('/?create=true')}
-                className="bg-linear-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full text-xl font-bold hover:shadow-xl transition-all hover:scale-105 flex items-center gap-3 mx-auto"
-              >
-                <Sparkles className="w-6 h-6" />
-                Create Your Story Now
-              </button>
-            </div>
+            {/* CTA Section - Only show if user is logged in */}
+            {user && (
+              <div className="bg-linear-to-r from-purple-100 to-pink-100 rounded-2xl p-8 text-center space-y-4">
+                <Moon className="w-12 h-12 text-purple-600 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-gray-800">
+                  Ready to create magical bedtime stories?
+                </h3>
+                <button
+                  onClick={() => router.push('/?create=true')}
+                  className="bg-linear-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full text-xl font-bold hover:shadow-xl transition-all hover:scale-105 flex items-center gap-3 mx-auto"
+                >
+                  <Sparkles className="w-6 h-6" />
+                  Create Your Story Now
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

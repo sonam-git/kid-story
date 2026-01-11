@@ -71,7 +71,7 @@ export default function StoryModal({ isOpen, onClose, onSubmit, isGenerating, ge
           <div className="flex items-center gap-3">
             <Image 
               src="/logo/ks-transparent-logo.png" 
-              alt="Story Magic" 
+              alt="ImagiKids" 
               width={40} 
               height={40}
               className="drop-shadow-md"

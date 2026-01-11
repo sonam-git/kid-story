@@ -56,13 +56,13 @@ export default function RegisterPage() {
           <Link href="/" className="inline-block">
             <Image
               src="/logo/ks-transparent-logo.png"
-              alt="Story Magic"
+              alt="ImagiKids"
               width={120}
               height={120}
               className="mx-auto"
             />
           </Link>
-          <h1 className="text-4xl font-bold text-purple-600 mt-4">Join Story Magic!</h1>
+          <h1 className="text-4xl font-bold text-purple-600 mt-4">Join Imagi Kids!</h1>
           <p className="text-gray-600 mt-2">Create your account and start writing amazing stories</p>
         </div>
 
