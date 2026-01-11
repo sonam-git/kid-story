@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Sample Story - ImagiKids</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .info-box {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+
+        .info-box h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .info-box ul {
+            padding-left: 20px;
+            color: #444;
+        }
+
+        .info-box li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .message.success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+            display: block;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+            display: block;
+        }
+
+        .message.loading {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            color: #856404;
+            display: block;
+        }
+
+        .story-details {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .story-details.show {
+            display: block;
+        }
+
+        .story-details h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .story-details p {
+            margin-bottom: 10px;
+            color: #444;
+        }
+
+        .story-details strong {
+            color: #333;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .button-group button {
+            flex: 1;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        }
+
+        .emoji {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="emoji">🧪</div>
+        <h1>Create Test Story</h1>
+        <p class="subtitle">Generate a sample story to test delete functionality</p>
+
+        <div class="info-box">
+            <h3>📝 What This Does:</h3>
+            <ul>
+                <li><strong>Creates:</strong> A test story called "🧪 Test Story - Delete Me!"</li>
+                <li><strong>Content:</strong> 4 scenes with Bobby the Bear & Lucy the Lion</li>
+                <li><strong>Images:</strong> Placeholder images from Unsplash (not Cloudinary)</li>
+                <li><strong>Purpose:</strong> Test the delete functionality and notifications</li>
+            </ul>
+        </div>
+
+        <button id="createBtn" onclick="createSampleStory()">
+            ✨ Create Sample Story
+        </button>
+
+        <div id="message" class="message"></div>
+
+        <div id="storyDetails" class="story-details">
+            <h3>✅ Story Created!</h3>
+            <p><strong>Title:</strong> <span id="storyTitle"></span></p>
+            <p><strong>Story ID:</strong> <span id="storyId"></span></p>
+            <p><strong>Scenes:</strong> <span id="sceneCount"></span></p>
+            <p><strong>Genres:</strong> <span id="genres"></span></p>
+            <p><strong>Characters:</strong> <span id="characters"></span></p>
+            
+            <div class="button-group">
+                <button onclick="window.location.href='http://localhost:3000/my-stories'" class="btn-primary">
+                    📚 Go to My Stories
+                </button>
+                <button onclick="location.reload()" class="btn-secondary">
+                    🔄 Create Another
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function createSampleStory() {
+            const btn = document.getElementById('createBtn');
+            const message = document.getElementById('message');
+            const details = document.getElementById('storyDetails');
+
+            // Reset UI
+            btn.disabled = true;
+            message.className = 'message loading';
+            message.textContent = '⏳ Creating sample story...';
+            details.classList.remove('show');
+
+            try {
+                const response = await fetch('http://localhost:3000/api/stories/create-sample', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to create story');
+                }
+
+                // Success!
+                message.className = 'message success';
+                message.textContent = '✅ ' + data.message;
+
+                // Show story details
+                document.getElementById('storyTitle').textContent = data.story.title;
+                document.getElementById('storyId').textContent = data.story.id;
+                document.getElementById('sceneCount').textContent = data.story.scenes.length;
+                document.getElementById('genres').textContent = data.story.genre.join(', ');
+                document.getElementById('characters').textContent = data.story.characters.join(', ');
+                details.classList.add('show');
+
+                // Hide create button
+                btn.style.display = 'none';
+
+            } catch (error) {
+                message.className = 'message error';
+                
+                if (error.message.includes('Not authenticated')) {
+                    message.textContent = '❌ Please log in first! Then refresh this page.';
+                } else {
+                    message.textContent = '❌ ' + error.message;
+                }
+                
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

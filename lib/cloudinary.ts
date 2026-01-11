@@ -72,4 +72,85 @@ export async function uploadMultipleToCloudinary(
   return Promise.all(uploadPromises);
 }
 
+/**
+ * Extract public_id from Cloudinary URL
+ * @param cloudinaryUrl - The full Cloudinary URL
+ * @returns The public_id or null if not a valid Cloudinary URL
+ */
+export function extractPublicId(cloudinaryUrl: string): string | null {
+  try {
+    // Cloudinary URL format: https://res.cloudinary.com/{cloud_name}/image/upload/v{version}/{public_id}.{format}
+    // Or: https://res.cloudinary.com/{cloud_name}/image/upload/{public_id}.{format}
+    
+    if (!cloudinaryUrl.includes('res.cloudinary.com')) {
+      return null;
+    }
+
+    const parts = cloudinaryUrl.split('/upload/');
+    if (parts.length < 2) {
+      return null;
+    }
+
+    // Get the part after /upload/
+    let pathAfterUpload = parts[1];
+    
+    // Remove version if present (v123456789/)
+    pathAfterUpload = pathAfterUpload.replace(/^v\d+\//, '');
+    
+    // Remove file extension
+    const publicId = pathAfterUpload.replace(/\.[^.]+$/, '');
+    
+    return publicId;
+  } catch (error) {
+    console.error('Error extracting public_id:', error);
+    return null;
+  }
+}
+
+/**
+ * Delete an image from Cloudinary
+ * @param cloudinaryUrl - The Cloudinary URL or public_id
+ * @returns True if deleted successfully, false otherwise
+ */
+export async function deleteFromCloudinary(cloudinaryUrl: string): Promise<boolean> {
+  try {
+    // Extract public_id from URL
+    const publicId = extractPublicId(cloudinaryUrl);
+    
+    if (!publicId) {
+      console.warn('⚠️ Could not extract public_id from URL:', cloudinaryUrl);
+      return false;
+    }
+
+    console.log(`🗑️ Deleting from Cloudinary: ${publicId}`);
+
+    const result = await cloudinary.uploader.destroy(publicId, {
+      resource_type: 'image',
+    });
+
+    if (result.result === 'ok') {
+      console.log(`✅ Deleted from Cloudinary: ${publicId}`);
+      return true;
+    } else {
+      console.warn(`⚠️ Cloudinary delete result: ${result.result} for ${publicId}`);
+      return false;
+    }
+  } catch (error: any) {
+    console.error('❌ Cloudinary delete error:', error.message);
+    return false;
+  }
+}
+
+/**
+ * Delete multiple images from Cloudinary
+ * @param cloudinaryUrls - Array of Cloudinary URLs
+ * @returns Array of boolean results
+ */
+export async function deleteMultipleFromCloudinary(
+  cloudinaryUrls: string[]
+): Promise<boolean[]> {
+  const deletePromises = cloudinaryUrls.map(url => deleteFromCloudinary(url));
+  return Promise.all(deletePromises);
+}
+
 export default cloudinary;

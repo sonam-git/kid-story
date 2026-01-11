@@ -3,6 +3,7 @@ import { getCurrentUser } from '@/lib/auth';
 import connectDB from '@/lib/mongodb';
 import StoryModel from '@/models/Story';
 import mongoose from 'mongoose';
+import { deleteMultipleFromCloudinary } from '@/lib/cloudinary';
 
 /**
  * GET /api/stories/[id] - Get a single story by ID
@@ -183,8 +184,8 @@ export async function DELETE(
 
     await connectDB();
 
-    // Delete story (only if it belongs to the current user)
-    const story = await StoryModel.findOneAndDelete({
+    // First, fetch the story to get image URLs
+    const story = await StoryModel.findOne({
       _id: id,
       userId: currentUser.userId,
     });
@@ -195,6 +196,32 @@ export async function DELETE(
         { status: 404 }
       );
     }
+
+    // Collect all Cloudinary image URLs to delete
+    const imageUrls: string[] = [];
+    
+    // Add cover image if it exists and is from Cloudinary
+    if (story.coverImage && story.coverImage.includes('res.cloudinary.com')) {
+      imageUrls.push(story.coverImage);
+    }
+
+    // Add all scene images that are from Cloudinary
+    story.scenes.forEach(scene => {
+      if (scene.imageUrl && scene.imageUrl.includes('res.cloudinary.com')) {
+        imageUrls.push(scene.imageUrl);
+      }
+    });
+
+    // Delete images from Cloudinary
+    if (imageUrls.length > 0) {
+      console.log(`🗑️ Deleting ${imageUrls.length} images from Cloudinary...`);
+      const deleteResults = await deleteMultipleFromCloudinary(imageUrls);
+      const successCount = deleteResults.filter(result => result).length;
+      console.log(`✅ Successfully deleted ${successCount}/${imageUrls.length} images from Cloudinary`);
+    }
+
+    // Delete story from database
+    await StoryModel.findByIdAndDelete(id);
 
     return NextResponse.json(
       {

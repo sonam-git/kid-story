@@ -18,6 +18,8 @@ export default function MyStories() {
   const [storyToDelete, setStoryToDelete] = useState<Story | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [deleteError, setDeleteError] = useState('');
   const router = useRouter();
   const { user } = useAuth();
 
@@ -68,12 +70,26 @@ export default function MyStories() {
   const confirmDelete = async () => {
     if (storyToDelete) {
       try {
+        setDeleteError('');
+        setSuccessMessage('');
         await apiStorageService.deleteStory(storyToDelete.id);
         setStories(stories.filter(s => s.id !== storyToDelete.id));
         setStoryToDelete(null);
-      } catch (err) {
+        setSuccessMessage('Story deleted successfully! All images have been removed.');
+        
+        // Auto-hide success message after 5 seconds
+        setTimeout(() => {
+          setSuccessMessage('');
+        }, 5000);
+      } catch (err: any) {
         console.error('Error deleting story:', err);
-        alert('Failed to delete story. Please try again.');
+        setStoryToDelete(null);
+        setDeleteError(err.message || 'Failed to delete story. Please try again.');
+        
+        // Auto-hide error message after 7 seconds
+        setTimeout(() => {
+          setDeleteError('');
+        }, 7000);
       }
     }
   };
@@ -102,6 +118,48 @@ export default function MyStories() {
           </p>
         </div>
       </div>
+
+      {/* Success Message */}
+      {successMessage && (
+        <div className="max-w-7xl mx-auto px-4 pt-6">
+          <div className="bg-green-50 border-2 border-green-500 rounded-2xl p-4 shadow-lg animate-bounce">
+            <div className="flex items-center gap-3">
+              <span className="text-3xl">✅</span>
+              <div className="flex-1">
+                <p className="text-green-800 font-bold text-lg">{successMessage}</p>
+              </div>
+              <button
+                onClick={() => setSuccessMessage('')}
+                className="text-green-600 hover:text-green-800 font-bold text-2xl"
+                aria-label="Close message"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Error Message */}
+      {deleteError && (
+        <div className="max-w-7xl mx-auto px-4 pt-6">
+          <div className="bg-red-50 border-2 border-red-500 rounded-2xl p-4 shadow-lg">
+            <div className="flex items-center gap-3">
+              <span className="text-3xl">❌</span>
+              <div className="flex-1">
+                <p className="text-red-800 font-bold text-lg">{deleteError}</p>
+              </div>
+              <button
+                onClick={() => setDeleteError('')}
+                className="text-red-600 hover:text-red-800 font-bold text-2xl"
+                aria-label="Close message"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 py-8">
