@@ -26,12 +26,15 @@ export async function GET() {
     // Transform MongoDB documents to match frontend Story type
     const transformedStories = stories.map((story) => ({
       id: story._id.toString(),
+      userId: story.userId.toString(),
       title: story.title,
       genre: story.genre,
       characters: story.characters,
       description: story.description,
       scenes: story.scenes,
       coverImage: story.coverImage,
+      likes: story.likes?.map((id: any) => id.toString()) || [],
+      likesCount: story.likesCount || 0,
       createdAt: story.createdAt.toISOString(),
     }));
 

@@ -119,7 +119,7 @@ export default function StoryCard({ story, onPlay, onDelete, onLike, showLike = 
           </p>
         </div>
 
-        {/* Like Button and Count (for All Stories) */}
+        {/* Like Button and Count (for All Stories - interactive) */}
         {showLike && (
           <div className="mb-3 flex items-center gap-2">
             <button
@@ -137,6 +137,16 @@ export default function StoryCard({ story, onPlay, onDelete, onLike, showLike = 
               />
               <span className="font-semibold">{likesCount}</span>
             </button>
+          </div>
+        )}
+
+        {/* Like Count Display (for My Stories - read-only) */}
+        {!showLike && likesCount > 0 && (
+          <div className="mb-3 flex items-center gap-2 px-4 py-2 bg-pink-50 rounded-full w-fit">
+            <Heart className="w-5 h-5 text-pink-600 fill-current" />
+            <span className="font-semibold text-pink-700">
+              {likesCount} {likesCount === 1 ? 'like' : 'likes'}
+            </span>
           </div>
         )}
 
